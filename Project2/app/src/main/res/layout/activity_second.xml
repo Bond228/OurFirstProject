@@ -8,7 +8,7 @@
     android:background="#6FA2D5">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/infoTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/infoTextView" />
 
     <TextView
         android:id="@+id/randomTextView"
@@ -38,8 +38,10 @@
         android:layout_height="wrap_content"
         android:text="@string/randomSecond_text"
         android:textColor="@android:color/white"
+        android:textSize="72sp"
+        app:layout_constraintVertical_bias="0.45"
         app:layout_constraintBottom_toTopOf="@+id/clickButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/infoTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

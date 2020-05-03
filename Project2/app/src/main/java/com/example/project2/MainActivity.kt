@@ -24,29 +24,23 @@ class MainActivity : AppCompatActivity() {
 
     fun newActivity(view: View){
         val newIntent = Intent(this, SecondActivity::class.java)
+
+        newIntent.putExtra(SecondActivity.TOTAL_KEY, count)
         startActivity(newIntent)
     }
 
     fun toastMe(view: View){
         var toast = Toast.makeText(this, "Хватит тыкать!", Toast.LENGTH_SHORT)
-
         toast.show()
     }
 
     fun countMe(view: View){
-        //val countString = textView2.text.toString()
-       // var count: Int = Integer.parseInt(countString)
-
         count++
-
         textView2.text = count.toString()
     }
 
     fun randMe(view:View){
-        //val countString = textView2.text.toString()
-        //var count: Int = Integer.parseInt(countString)
         count =  (1..12).shuffled().first().toInt()
-
         textView2.text = count.toString()
     }
 

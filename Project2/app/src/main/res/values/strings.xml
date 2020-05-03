@@ -8,7 +8,8 @@
     <string name="count_text">Count</string>
     <string name="random_text">Random</string>
     <string name="clear_text">Clear</string>
-    <string name="interes_text">Хотел что-то интересное? Ну кликни на кнопочку..</string>
+    <string name="interes_text">Хотел что-то интересное? Ну кликни на кнопочку.. Ладно, тут будет рандомное число от 0 до %1d</string>
     <string name="secondButton">Ну давай</string>
     <string name="nonono">Ни нада</string>
+    <string name="randomSecond_text">R</string>
 </resources>

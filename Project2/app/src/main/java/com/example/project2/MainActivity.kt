@@ -1,5 +1,6 @@
 package com.example.project2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -21,6 +22,11 @@ class MainActivity : AppCompatActivity() {
 
     var count: Int = 0
 
+    fun newActivity(view: View){
+        val newIntent = Intent(this, SecondActivity::class.java)
+        startActivity(newIntent)
+    }
+
     fun toastMe(view: View){
         var toast = Toast.makeText(this, "Хватит тыкать!", Toast.LENGTH_SHORT)
 
@@ -37,8 +43,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun randMe(view:View){
-        val countString = textView2.text.toString()
-        var count: Int = Integer.parseInt(countString)
+        //val countString = textView2.text.toString()
+        //var count: Int = Integer.parseInt(countString)
         count =  (1..12).shuffled().first().toInt()
 
         textView2.text = count.toString()

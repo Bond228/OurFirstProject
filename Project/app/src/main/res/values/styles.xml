@@ -17,4 +17,19 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="qwerty">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:accessibilityLiveRegion">none</item>
+        <item name="android:addStatesFromChildren">false</item>
+        <item name="android:alwaysDrawnWithCache">true</item>
+        <item name="android:background">#43A047</item>
+        <item name="android:clickable">false</item>
+        <item name="android:clipChildren">false</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
 </resources>

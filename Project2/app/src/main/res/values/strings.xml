@@ -12,4 +12,7 @@
     <string name="secondButton">Ну давай</string>
     <string name="nonono">Ни нада</string>
     <string name="randomSecond_text">R</string>
+    <string name="click_next">Добро пожаловать! Добавьте фото</string>
+    <string name="make_photo_text">Сделать фото</string>
+    <string name="add_photo_text">Выбрать фото</string>
 </resources>

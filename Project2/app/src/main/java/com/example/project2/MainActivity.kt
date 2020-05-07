@@ -3,6 +3,7 @@ package com.example.project2
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -15,9 +16,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
     }
+
 
     fun newActivityCamera(view: View) {
         val newIntent = Intent1(this, SecondActivity::class.java).also {

@@ -15,4 +15,5 @@
     <string name="click_next">Добро пожаловать! Добавьте фото</string>
     <string name="make_photo_text">Сделать фото</string>
     <string name="add_photo_text">Выбрать фото</string>
+    <string name="rotate_text">Повернуть</string>
 </resources>

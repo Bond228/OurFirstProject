@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.project2.R.drawable.header
@@ -14,6 +15,7 @@ import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import kotlinx.android.synthetic.main.activity_second.*
 import android.content.Intent as Intent1
 
@@ -48,7 +50,7 @@ class SecondActivity : AppCompatActivity() {
 
 
 
-
+//меню
     private fun initFunc() {
         createHeader()
         createDrawer()
@@ -58,12 +60,35 @@ class SecondActivity : AppCompatActivity() {
         mDrawer = DrawerBuilder()
             .withActivity(this)
             .withAccountHeader(mHeader)
+            .withSelectedItem(-1)
             .addDrawerItems(
                 PrimaryDrawerItem().withIdentifier(100)
                     .withIconTintingEnabled(true)
                     .withName("Повернуть")
                     .withSelectable(false)
-            ).build()
+                    .withIcon(R.drawable.ar),
+                PrimaryDrawerItem().withIdentifier(101)
+                    .withIconTintingEnabled(true)
+                    .withName("Масштабировать")
+                    .withSelectable(false)
+                    .withIcon(R.drawable.arrow),
+                PrimaryDrawerItem().withIdentifier(101)
+                    .withIconTintingEnabled(true)
+                    .withName("Цветокоррекция")
+                    .withSelectable(false)
+                    .withIcon(R.drawable.colorwheel)
+            )
+            .withOnDrawerItemClickListener(object :Drawer.OnDrawerItemClickListener{
+                override fun onItemClick(
+                    view: View?,
+                    position: Int,
+                    drawerItem: IDrawerItem<*>
+                ): Boolean {
+                    Toast.makeText(applicationContext,"Работает, ты нажал на $position", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+
+            }).build()
     }
 
     private fun createHeader() {
@@ -72,6 +97,7 @@ class SecondActivity : AppCompatActivity() {
             .withHeaderBackground(header)
             .addProfiles(
                 ProfileDrawerItem().withName("The best")
+                    .withIcon(R.drawable.photo)
             )
             .build()
     }
@@ -79,7 +105,7 @@ class SecondActivity : AppCompatActivity() {
 
 
 
-
+//Загрузка фото
     private fun dispatchTakePictureIntentCamera() {
         val takePictureIntent = Intent1(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
@@ -113,8 +139,7 @@ class SecondActivity : AppCompatActivity() {
             }
         }
 
-        val toast = Toast.makeText(this, "Свайпните вправо для того, чтобы открыть меню!", Toast.LENGTH_SHORT)
-        toast.show()
+        Toast.makeText(this, "Свайпните вправо для того, чтобы открыть меню!", Toast.LENGTH_SHORT).show()
         }
 }
 

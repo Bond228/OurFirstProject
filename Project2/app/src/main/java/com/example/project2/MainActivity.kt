@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
        }
 
 
-   fun newActivityGalery(view: View) {
+   fun newActivityGallery(view: View) {
        val newIntent = Intent1(this, SecondActivity::class.java)
            newIntent.putExtra(SecondActivity.TOTAL_KEY, false)
            startActivity(newIntent)

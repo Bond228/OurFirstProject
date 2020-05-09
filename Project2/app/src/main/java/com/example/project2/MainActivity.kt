@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     fun newActivityCamera(view: View) {
         val newIntent = Intent1(this, SecondActivity::class.java).also {
             it.putExtra(SecondActivity.TOTAL_KEY, true)
@@ -50,10 +49,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    fun toastMe(view: View){
-        var toast = Toast.makeText(this, "Хватит тыкать!", Toast.LENGTH_SHORT)
-        toast.show()
-    }
+   // fun toastMe(view: View){
+     //   var toast = Toast.makeText(this, "Хватит тыкать!", Toast.LENGTH_SHORT)
+       // toast.show()
+    //}
 
 
     //fun clearMe(view: View){

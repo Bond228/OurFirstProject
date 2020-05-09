@@ -1,9 +1,5 @@
 package com.example.project2
 
-import android.app.Activity
-import android.content.Intent
-import android.content.Intent.ACTION_GET_CONTENT
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -11,26 +7,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Toast
-import android.widget.Toolbar
-import androidx.core.graphics.createBitmap
+import com.example.project2.R.drawable.header
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_second.*
 
-import java.io.File
+import android.content.Intent as Intent1
 
 class SecondActivity : AppCompatActivity() {
 
     companion object {
         const val TOTAL_KEY = "total_key"
-        val REQUEST_IMAGE_CAPTURE = 1
-        val REQUEST_GALERY = 0
+        const val REQUEST_IMAGE_CAPTURE = 1
+        const val REQUEST_GALLERY = 0
     }
 
     private lateinit var mDrawer: Drawer
@@ -41,12 +34,16 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
 
-        var camera: Boolean = intent.getBooleanExtra(TOTAL_KEY, true)
+        val camera: Boolean = intent.getBooleanExtra(TOTAL_KEY, true)
         if (camera) dispatchTakePictureIntentCamera()
         else dispatchTakePictureIntentGalery()
 
         initFunc()
+    }
 
+    fun newActivity(view: View) {
+        val newIntent = Intent1(this, MainActivity::class.java)
+        startActivity(newIntent)
     }
 
     private fun initFunc() {
@@ -57,68 +54,58 @@ class SecondActivity : AppCompatActivity() {
     private fun createDrawer() {
         mDrawer = DrawerBuilder()
             .withActivity(this)
-            .withActionBarDrawerToggle(true)
-            .withSelectedItem(-1)
             .withAccountHeader(mHeader)
             .addDrawerItems(
                 PrimaryDrawerItem().withIdentifier(100)
                     .withIconTintingEnabled(true)
-                    .withName("Создать группу")
+                    .withName("Повернуть")
                     .withSelectable(false)
             ).build()
-
     }
 
     private fun createHeader() {
         mHeader = AccountHeaderBuilder()
             .withActivity(this)
+            .withHeaderBackground(header)
             .addProfiles(
-                ProfileDrawerItem().withName("Yura Pterov")
-                    .withEmail("+7911111111")
-            ).build()
-    }
-
-
-
-
-
-
-
-    fun rotateImage(view: View){
-        imageView2.animate().rotation(90F)
+                ProfileDrawerItem().withName("The best")
+            )
+            .build()
     }
 
     private fun dispatchTakePictureIntentCamera() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val takePictureIntent = Intent1(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
     }
 
     private fun dispatchTakePictureIntentGalery() {
-        val intent = Intent(Intent.ACTION_PICK)
+        val intent = Intent1(Intent1.ACTION_PICK)
         intent.type = "image/*"
         if (intent.resolveActivity(packageManager) != null) {
-            startActivityForResult(intent, REQUEST_GALERY)
+            startActivityForResult(intent, REQUEST_GALLERY)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent1?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val extras = data?.extras
-            val imageBitmap =
-                extras!!.get("data") as Bitmap?
-            imageView2.setImageBitmap(imageBitmap)
-        }
 
-        if(requestCode == REQUEST_GALERY && data!=null){
-            var imageUri: Uri = data.getData()!!
-            var imageStream = getContentResolver().openInputStream(imageUri)
-            var selectedImage = BitmapFactory.decodeStream(imageStream)
-            imageView2.setImageBitmap(selectedImage)
+        when(requestCode) {
+            REQUEST_IMAGE_CAPTURE -> {
+                val extras = data?.extras
+                val imageBitmap =
+                    extras!!.get("data") as Bitmap?
+                imageView.setImageBitmap(imageBitmap)
+            }
+            REQUEST_GALLERY ->{
+                val imageUri: Uri = data?.getData()!!
+                val imageStream = getContentResolver().openInputStream(imageUri)
+                val selectedImage = BitmapFactory.decodeStream(imageStream)
+                imageView.setImageBitmap(selectedImage)
+            }
         }
-
-    }
+        }
 }
+
 

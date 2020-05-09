@@ -16,4 +16,5 @@
     <string name="make_photo_text">Сделать фото</string>
     <string name="add_photo_text">Выбрать фото</string>
     <string name="rotate_text">Повернуть</string>
+    <string name="new_photo_text">Новое фото</string>
 </resources>

@@ -5,5 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="screenBackround">#6FA2D5</color>
     <color name="header">#0088CC</color>
-    <color name="wellText">#E0FFFF</color>
+    <color
+        id = "123"
+        name="wellText">#E0FFFF</color>
 </resources>

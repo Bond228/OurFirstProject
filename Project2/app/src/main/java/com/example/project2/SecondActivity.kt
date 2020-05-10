@@ -159,7 +159,7 @@ class SecondActivity : AppCompatActivity() {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmSS").format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("JPEG_$timeStamp",  ".jpg",  storageDir).apply {
+        return File.createTempFile("JPEG_$timeStamp", ".jpg", storageDir).apply {
             // Save a file: path for use with ACTION_VIEW intents
             currentPhotoPath = absolutePath
         }
@@ -177,16 +177,12 @@ class SecondActivity : AppCompatActivity() {
                 Toast.makeText(this,"Ничего не создалось", Toast.LENGTH_SHORT).show()
                 null
             }
-            // Continue only if the File was successfully created
-            photoFile?.also {
-                val photoURI: Uri = FileProvider.getUriForFile(
-                    this,
-                    "com.example.android.fileprovider",
-                    it
-                )
+
+            photoFile?.also {// Continue only if the File was successfully created
+                val photoURI: Uri = FileProvider.getUriForFile(this, "com.example.android.provider", it)
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
     }
     }
@@ -209,12 +205,11 @@ class SecondActivity : AppCompatActivity() {
                     extras!!.get("data") as Bitmap?
                 imageView.setImageBitmap(imageBitmap)
             }
-            REQUEST_GALLERY ->{
+            REQUEST_GALLERY -> {
                 imageUri= data?.data!!
                 val imageStream = contentResolver.openInputStream(imageUri)
                 val selectedImage = BitmapFactory.decodeStream(imageStream)
                 imageView.setImageBitmap(selectedImage)
-
             }
         }
 

@@ -158,7 +158,7 @@ class SecondActivity : AppCompatActivity() {
         // Create an image file name
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmSS").format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("JPEG_$timeStamp", ".jpg", storageDir).apply {
+        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir).apply {
             // Save a file: path for use with ACTION_VIEW intents
             currentPhotoPath = absolutePath
         }
@@ -169,21 +169,21 @@ class SecondActivity : AppCompatActivity() {
         // Ensure that there's a camera activity to handle the intent
         takePictureIntent.resolveActivity(packageManager)?.also {
             // Create the File where the photo should go
-            /*val photoFile: File? = try {
+            val photoFile: File? = try {
                 createImageFile()
             } catch (ex: IOException) {
                 // Error occurred while creating the File
-                Toast.makeText(this,"Ничего не создалось", Toast.LENGTH_SHORT).show()
                 null
             }
 
-            photoFile?.also {// Continue only if the File was successfully created
-                val photoURI: Uri = FileProvider.getUriForFile(this, "com.example.android.fileprovider", it)
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)*/
-
+            if (photoFile != null) {
+                // Continue only if the File was successfully created
+                val photoURI: Uri =
+                    FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-
+        }
         }
     }
 
@@ -191,7 +191,17 @@ class SecondActivity : AppCompatActivity() {
     private fun dispatchTakePictureIntentGallery() {
         val intent = Intent1(Intent1.ACTION_PICK)
         intent.type = "image/*"
-        if (intent.resolveActivity(packageManager) != null) {
+        val photoFile: File? = try {
+            createImageFile()
+        } catch (ex: IOException) {
+            // Error occurred while creating the File
+            null
+        }
+        if (photoFile != null) {
+            // Continue only if the File was successfully created
+            val photoURI: Uri =
+                FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
             startActivityForResult(intent, REQUEST_GALLERY)
         }
     }
@@ -203,7 +213,7 @@ class SecondActivity : AppCompatActivity() {
             REQUEST_IMAGE_CAPTURE -> {
                 val extras = data?.extras
                 val imageBitmap =
-                    extras!!.get("data") as Bitmap?
+                    extras!!.get("data") as Bitmap
                 imageView.setImageBitmap(imageBitmap)
             }
             REQUEST_GALLERY -> {
@@ -213,6 +223,27 @@ class SecondActivity : AppCompatActivity() {
                 imageView.setImageBitmap(selectedImage)
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

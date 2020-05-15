@@ -42,18 +42,20 @@ class SecondActivity : AppCompatActivity() {
     private lateinit var mHeader: AccountHeader
     private lateinit var imageUri: Uri
     private lateinit var currentPhotoPath: String
+    private var count: Int = 0
+    lateinit var selectedImage: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_second)
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_second)
 
-        val camera: Boolean = intent.getBooleanExtra(TOTAL_KEY, true)
-        if (camera) dispatchTakePictureIntentCamera()
-        else dispatchTakePictureIntentGallery()
+            val camera: Boolean = intent.getBooleanExtra(TOTAL_KEY, true)
+            if (camera) dispatchTakePictureIntentCamera()
+            else dispatchTakePictureIntentGallery()
 
-        initFunc()
+            initFunc()
+
     }
-
 
 
 
@@ -130,6 +132,11 @@ class SecondActivity : AppCompatActivity() {
                     drawerItem: IDrawerItem<*>
                 ): Boolean {
                     when(position){
+                        1 -> {
+                            val photo = RotateImage().rotate(selectedImage, 90)
+                            selectedImage = photo
+                            imageView.setImageBitmap(photo)
+                        }
                         7 -> newActivity()
                         8 -> galleryAddPic()
                         else -> Toast.makeText(applicationContext,"Ещё не работает..(", Toast.LENGTH_SHORT).show()
@@ -165,43 +172,19 @@ class SecondActivity : AppCompatActivity() {
     }
 
     private fun dispatchTakePictureIntentCamera() {
-    Intent1(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-        // Ensure that there's a camera activity to handle the intent
-        takePictureIntent.resolveActivity(packageManager)?.also {
-            // Create the File where the photo should go
-            val photoFile: File? = try {
-                createImageFile()
-            } catch (ex: IOException) {
-                // Error occurred while creating the File
-                null
-            }
+        val takePictureIntent = Intent1(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
 
-            if (photoFile != null) {
-                // Continue only if the File was successfully created
-                val photoURI: Uri =
-                    FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile)
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            }
-        }
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
     }
+
 
 
     private fun dispatchTakePictureIntentGallery() {
         val intent = Intent1(Intent1.ACTION_PICK)
         intent.type = "image/*"
-        val photoFile: File? = try {
-            createImageFile()
-        } catch (ex: IOException) {
-            // Error occurred while creating the File
-            null
-        }
-        if (photoFile != null) {
-            // Continue only if the File was successfully created
-            val photoURI: Uri =
-                FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile)
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        if (intent.resolveActivity(packageManager) != null) {
             startActivityForResult(intent, REQUEST_GALLERY)
         }
     }
@@ -212,14 +195,14 @@ class SecondActivity : AppCompatActivity() {
         when(requestCode) {
             REQUEST_IMAGE_CAPTURE -> {
                 val extras = data?.extras
-                val imageBitmap =
+                selectedImage =
                     extras!!.get("data") as Bitmap
-                imageView.setImageBitmap(imageBitmap)
+                imageView.setImageBitmap(selectedImage)
             }
             REQUEST_GALLERY -> {
                 imageUri= data?.data!!
                 val imageStream = contentResolver.openInputStream(imageUri)
-                val selectedImage = BitmapFactory.decodeStream(imageStream)
+                selectedImage = BitmapFactory.decodeStream(imageStream)
                 imageView.setImageBitmap(selectedImage)
             }
         }
@@ -248,9 +231,10 @@ class SecondActivity : AppCompatActivity() {
 
 
 
-
+        count++
         Toast.makeText(this, "Свайпните вправо для того, чтобы открыть меню!", Toast.LENGTH_SHORT).show()
         }
+
 }
 
 

@@ -9,9 +9,7 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent as Intent1
 
-
 class MainActivity : AppCompatActivity() {
-
 
     companion object {
         private const val PERMISSION_CAMERA = 1

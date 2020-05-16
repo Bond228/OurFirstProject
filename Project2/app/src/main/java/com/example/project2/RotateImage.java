@@ -41,6 +41,8 @@ public class RotateImage {
 
                 if (sourceX >= 0 && sourceX < imageWight && sourceY >=0 && sourceY < imageHeight)
                     newBitmap.setPixel(x,y,image.getPixel(sourceX,sourceY));
+
+
                 else
                     newBitmap.setPixel(x,y, 0xffffff);
             }

@@ -10,17 +10,13 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.FileProvider
-import com.example.project2.SecondActivity.Companion.REQUEST_GALLERY
-import com.example.project2.SecondActivity.Companion.REQUEST_IMAGE_CAPTURE
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import kotlinx.android.synthetic.main.activity_second.*
 import java.io.File
@@ -174,9 +170,16 @@ class SecondActivity : AppCompatActivity() {
     private fun dispatchTakePictureIntentCamera() {
         val takePictureIntent = Intent1(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
+            // Create the File where the photo should go
+            val photoFile: File? = createImageFile()
 
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        }
+            if (photoFile != null) {
+                // Continue only if the File was successfully created
+                val photoURI: Uri = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                }
+            }
     }
 
 

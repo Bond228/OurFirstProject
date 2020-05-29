@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mikepenz.materialdrawer.AccountHeader
@@ -16,6 +17,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import kotlinx.android.synthetic.main.activity_second.*
+import kotlinx.android.synthetic.main.fragment_rotate.*
 
 class SecondActivity : AppCompatActivity() {
 
@@ -28,6 +30,7 @@ class SecondActivity : AppCompatActivity() {
     private lateinit var mDrawer: Drawer
     private lateinit var mHeader: AccountHeader
     lateinit var selectedImage: Bitmap
+    var angle: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +41,36 @@ class SecondActivity : AppCompatActivity() {
         else dispatchTakePictureIntentGallery()
 
         initFunc()
+        angle_view.text = angle.toString()
 
+        right_button.setOnClickListener() {
+            val photo = rotate(selectedImage, 90)
+            selectedImage = photo
+            imageView.setImageBitmap(photo)
+        }
+
+        left_button.setOnClickListener() {
+            val photo = rotate(selectedImage, -90)
+            selectedImage = photo
+            imageView.setImageBitmap(photo)
+        }
+
+        any_angle_button.setOnClickListener(){
+            val photo = rotate(selectedImage, angle)
+            selectedImage = photo
+            imageView.setImageBitmap(photo)
+        }
+
+        seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                angle_view.text = progress.toString()
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                angle = seekBar?.progress!!
+            }
+        })
     }
 
     private fun newActivity(){
@@ -103,11 +135,8 @@ class SecondActivity : AppCompatActivity() {
                     when(position){
                         1 -> {
                             //val transaction = supportFragmentManager.beginTransaction()
-                            //transaction.replace(R.id.fragment_for_rotate, RotateFragment())
+                            //transaction.replace(R.id.fragment_for_rotate, StartFragment())
                             //transaction.commit()
-                            //val photo = RotateImage().rotate(selectedImage, 90)
-                            //selectedImage = photo
-                            //imageView.setImageBitmap(photo)
                         }
                         7 -> newActivity()
                        // 8 -> galleryAddPic()
@@ -186,7 +215,49 @@ class SecondActivity : AppCompatActivity() {
 
 
 
+
+    fun rotate(image: Bitmap, angle: Int): Bitmap {
+        val rad = angle * 3.14f / 180.toDouble()
+        val cosf = Math.cos(rad)
+        val sinf = Math.sqrt(1 - cosf * cosf)
+        val imageWight = image.width
+        val imageHeight = image.height
+        val x1 = (-imageHeight * sinf).toInt()
+        val y1 = (imageHeight * cosf).toInt()
+        val x2 = (imageWight * cosf - imageHeight * sinf).toInt()
+        val y2 = (imageHeight * cosf + imageWight * sinf).toInt()
+        val x3 = (imageWight * cosf).toInt()
+        val y3 = (imageWight * sinf).toInt()
+        val minX =
+            Math.min(0, Math.min(x1, Math.min(x2, x3)))
+        val minY =
+            Math.min(0, Math.min(y1, Math.min(y2, y3)))
+        val maxX = Math.max(x1, Math.max(x2, x3))
+        val maxY = Math.max(y1, Math.max(y2, y3))
+        val Wight = maxX - minX
+        val Height = maxY - minY
+        val newBitmap: Bitmap =
+            Bitmap.createBitmap(Wight, Height, image.config)
+        for (y in 0 until Height) {
+            for (x in 0 until Wight) {
+                val sourceX = ((x + minX) * cosf + (y + minY) * sinf).toInt()
+                val sourceY = ((y + minY) * cosf - (x + minX) * sinf).toInt()
+                if (sourceX >= 0 && sourceX < imageWight && sourceY >= 0 && sourceY < imageHeight) newBitmap.setPixel(
+                    x,
+                    y,
+                    image.getPixel(sourceX, sourceY)
+                ) else newBitmap.setPixel(x, y, 0xffffff)
+            }
+        }
+        return newBitmap
+    }
+
+
+
+
 }
+
+
 
 
 

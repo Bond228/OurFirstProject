@@ -1,4 +1,4 @@
-package com.example.project2
+package com.example.newproject
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -6,10 +6,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
+import com.example.newproject.SecondActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent as Intent1
 
+
 class MainActivity : AppCompatActivity() {
+
 
     companion object {
         private const val PERMISSION_CAMERA = 1
@@ -20,15 +23,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        cameraButton.setOnClickListener {
+
+        camera_button.setOnClickListener {
             checkCamera()
         }
 
-        galleryButton.setOnClickListener {
+
+        gallery_button.setOnClickListener {
             checkGallery()
         }
-
     }
+
+
 
     private fun checkCamera (){
         val permissionStatus = checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -42,7 +48,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkGallery(){
         val permissionStatus = checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-
         if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
             newActivity(false)
 
@@ -52,11 +57,14 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
     private fun newActivity(camera: Boolean){
         val newIntent = Intent1(this, SecondActivity::class.java)
         newIntent.putExtra(SecondActivity.TOTAL_KEY, camera)
         startActivity(newIntent)
     }
+
 
 
 
@@ -72,41 +80,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-/*fun newActivityCamera(view: View) {
-       val newIntent = Intent1(this, SecondActivity::class.java)
-           newIntent.putExtra(SecondActivity.TOTAL_KEY, true)
-           startActivity(newIntent)
-       }
-
-
-   fun newActivityGallery(view: View) {
-       val newIntent = Intent1(this, SecondActivity::class.java)
-           newIntent.putExtra(SecondActivity.TOTAL_KEY, false)
-           startActivity(newIntent)
-       }
-   }*/
-
-
-// fun toastMe(view: View){
-//   var toast = Toast.makeText(this, "Хватит тыкать!", Toast.LENGTH_SHORT)
-// toast.show()
-//}

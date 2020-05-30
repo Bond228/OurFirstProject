@@ -95,6 +95,7 @@ class MainActivity : AppCompatActivity() {
     private fun newActivity(camera: Uri) {
         val newIntent = Intent1(this, SecondActivity::class.java)
         newIntent.putExtra(SecondActivity.TOTAL_KEY, camera.toString())
+        newIntent.putExtra(SecondActivity.WHAT, 0)
         startActivity(newIntent)
     }
 
@@ -118,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                     )
                     if (photoUri != null) {
                         try {
-                            newActivity(photoUri)
+                            //newActivity(photoUri)
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

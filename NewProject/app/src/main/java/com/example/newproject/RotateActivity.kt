@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_rotate.*
-import kotlinx.android.synthetic.main.activity_second.*
 
 class RotateActivity : AppCompatActivity() {
 
@@ -37,28 +36,33 @@ class RotateActivity : AppCompatActivity() {
 
         angle_view.text = angle.toString()
 
-        right_button.setOnClickListener() {
+        right_button.setOnClickListener {
             photo = rotate(selectedImage, -90)
             selectedImage = photo
             imageView1.setImageBitmap(photo)
+
         }
 
-        left_button.setOnClickListener() {
+        left_button.setOnClickListener {
             photo = rotate(selectedImage, -90)
             selectedImage = photo
             imageView1.setImageBitmap(photo)
+
         }
 
-        any_angle_button.setOnClickListener(){
+        any_angle_button.setOnClickListener{
             photo = rotate(selectedImage, angle)
             selectedImage = photo
             imageView1.setImageBitmap(photo)
+
         }
 
-        save_image_button.setOnClickListener(){
+        save_image_button.setOnClickListener{
             val newIntent = Intent(this, SecondActivity::class.java)
-            imageView.setImageBitmap(photo)
+            newIntent.putExtra(SecondActivity.WHAT, 1)
+            newIntent.putExtra(SecondActivity.BitmapImage,selectedImage)
             startActivity(newIntent)
+
 
         }
 
@@ -76,12 +80,14 @@ class RotateActivity : AppCompatActivity() {
 
         old_photo_button.setOnClickListener{
             val newIntent = Intent(this, SecondActivity::class.java)
+            newIntent.putExtra(SecondActivity.TOTAL_KEY, imageUri.toString())
             startActivity(newIntent)
-            imageView.setImageBitmap(photo)
         }
     }
 
-    fun rotate(image: Bitmap, angle: Int): Bitmap {
+
+
+    private fun rotate(image: Bitmap, angle: Int): Bitmap {
         val rad = angle * 3.14f / 180.toDouble()
         val cosf = Math.cos(rad)
         val sinf = Math.sqrt(1 - cosf * cosf)

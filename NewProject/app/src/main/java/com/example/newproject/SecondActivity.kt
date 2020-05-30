@@ -21,6 +21,8 @@ class SecondActivity : AppCompatActivity() {
 
     companion object {
         const val TOTAL_KEY = "total_key"
+        const val WHAT = "what"
+        const val BitmapImage = "BitmapImage"
         const val REQUEST_IMAGE_CAPTURE = 1
         const val REQUEST_GALLERY_IMAGE = 0
     }
@@ -28,11 +30,14 @@ class SecondActivity : AppCompatActivity() {
     private lateinit var mDrawer: Drawer
     private lateinit var mHeader: AccountHeader
     lateinit var selectedImage: Bitmap
+    var rotateBitmap: Bitmap? = null
     lateinit var imageUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
+
+
 
         imageUri = Uri.parse(intent.getStringExtra("total_key"))
         val imageStream = contentResolver.openInputStream(imageUri)
@@ -40,6 +45,7 @@ class SecondActivity : AppCompatActivity() {
         imageView.setImageBitmap(selectedImage)
 
         initFunc()
+        Toast.makeText(applicationContext,"Свайпните вправо для того, чтобы открыть меню!", Toast.LENGTH_SHORT).show()
     }
 
     private fun newActivity(){
@@ -81,7 +87,7 @@ class SecondActivity : AppCompatActivity() {
                     .withIcon(R.drawable.palette),
                 PrimaryDrawerItem().withIdentifier(4)
                     .withIconTintingEnabled(true)
-                    .withName("Ретуширование")
+                    .withName("Фильтры")
                     .withSelectable(false)
                     .withIcon(R.drawable.magic),
                 PrimaryDrawerItem().withIdentifier(5)
